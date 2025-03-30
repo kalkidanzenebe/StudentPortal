@@ -233,3 +233,4 @@ C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Micros
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\StudentPortal.Web.sourcelink.json

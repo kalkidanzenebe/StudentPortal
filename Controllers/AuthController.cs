@@ -87,6 +87,12 @@ namespace StudentPortal.Web.Controllers
             // If we reach here, something went wrong (invalid model)
             return View(model);
         }
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Clear all session data
+            return RedirectToAction("Index", "Home"); // Redirect to Login Page
+        }
 
     }
 }
