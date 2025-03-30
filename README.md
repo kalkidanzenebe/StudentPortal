@@ -51,6 +51,4 @@ If you'd like to contribute:
 - Make your changes and commit (`git commit -m "feat: added XYZ feature"`)
 - Push to GitHub and create a Pull Request
 
-## License
-This project is licensed under the MIT License.
 
