@@ -2,7 +2,10 @@
 @model List<StudentPortal.Web.Models.Entities.Student>
 @if (TempData["SuccessMessage"] != null)
 {
-    <div id="successMessage" class="alert alert-success">
+    var messageType = TempData["MessageType"] as string;
+    var alertClass = messageType == "delete" ? "alert-danger" : "alert-success"; // Determine class based on message type
+    <div id="successMessage" class="alert @alertClass">
+        <!-- Use alert class based on message type -->
         @TempData["SuccessMessage"]
     </div>
 }
@@ -15,12 +18,21 @@
                 successMessage.style.display = 'none';
             }, 3000); // Message disappears after 3 seconds
         }
+
+        // Scroll to the highlighted student if applicable
+        var highlightId = '@ViewBag.HighlightId';
+        if (highlightId) {
+            var highlightedRow = document.getElementById('student-' + highlightId);
+            if (highlightedRow) {
+                highlightedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
     };
 </script>
 
+
 <h1>Students</h1>
 
-<!-- Add New Student Button -->
 <a class="btn btn-success mb-3" href="@Url.Action("Add", "Students")">Add New Student</a>
 
 <table class="table">
@@ -35,14 +47,13 @@
     <tbody>
         @foreach (var student in Model)
         {
-            <tr>
+            var highlightClass = student.Id == ViewBag.HighlightId ? "table-success" : ""; // Change class if highlighted
+            <tr id="student-@student.Id" class="@highlightClass">
                 <td>@student.Id</td>
                 <td>@student.Name</td>
                 <td>@student.Email</td>
                 <td>
                     <a class="btn btn-primary" asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id">Edit</a>
-
-                    <!-- Delete Button wrapped in form to make it a POST request -->
                     <form method="post" action="@Url.Action("Delete", "Students")" style="display:inline;">
                         <input type="hidden" name="id" value="@student.Id" />
                         <button type="submit" class="btn btn-danger">Delete</button>

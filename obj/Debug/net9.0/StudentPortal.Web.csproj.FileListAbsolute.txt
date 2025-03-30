@@ -148,7 +148,6 @@ C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\runtim
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\scopedcss\bundle\StudentPortal.Web.styles.css
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\scopedcss\projectbundle\StudentPortal.Web.bundle.scp.css
-C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\compressed\tn6b99h5br-b9sayid5wm.gz
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\compressed\ffacl3tu4l-61n19gt1b8.gz
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\compressed\06ak4vy388-xtxxf3hu2r.gz
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\compressed\fv7ck0an4f-bqjiyaj88i.gz
@@ -234,3 +233,4 @@ C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Micros
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\StudentPortal.Web.sourcelink.json
+C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\obj\Debug\net9.0\compressed\tn6b99h5br-snl3fcy1vd.gz
