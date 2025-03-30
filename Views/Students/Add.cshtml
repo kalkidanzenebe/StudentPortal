@@ -1,0 +1,46 @@
+﻿@* 
+    For more information on enabling MVC for empty projects, visit 
+    https://go.microsoft.com/fwlink/?LinkID=397860 
+*@
+
+@{
+}
+
+@model StudentPortal.Web.Models.AddStudentViewModel
+
+<h1>Add Student</h1>
+
+<form method="post">
+
+	<div class="mt-3">
+		<label class="form-label">Name</label>
+		<input type="text" class="form-control" asp-for="Name" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+
+	<div class="mt-3">
+		<label class="form-label">Email</label>
+		<input type="email" class="form-control" asp-for="Email" />
+		<span asp-validation-for="Email" class="text-danger"></span> <!-- Fixed to "Email" -->
+	</div>
+
+	<div class="mt-3">
+		<label class="form-label">Phone</label>
+		<input type="text" class="form-control" asp-for="Phone" />
+		<span asp-validation-for="Phone" class="text-danger"></span> <!-- Fixed to "Phone" -->
+	</div>
+
+	<div class="mt-3">
+		<input type="checkbox" class="form-check-input" id="subscribed" asp-for="Subscribe" />
+		<label class="form-check-label" for="subscribed">Subscribed</label>
+		<span asp-validation-for="Subscribe" class="text-danger"></span> <!-- Fixed to "Subscribe" -->
+	</div>
+
+	<div class="mt-3">
+		<button type="submit" class="btn btn-primary">Add</button>
+	</div>
+
+</form>
+
+@* Add this at the end of the layout to enable client-side validation *@
+<partial name="_ValidationScriptsPartial" />
