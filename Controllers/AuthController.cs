@@ -19,31 +19,37 @@ namespace StudentPortal.Web.Controllers
         }
 
         [HttpPost]
+        
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Error = "Please fill in all required fields.";
                 return View(model);
             }
 
-            // Check if user exists in the database
             var user = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            if (user != null && _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password) == PasswordVerificationResult.Success)
+            if (user == null)
             {
-                // Store user email in session
-                HttpContext.Session.SetString("UserEmail", user.Email);
+                TempData["ErrorMessage"] = "You are not registered. Please sign up.";
+                return RedirectToAction("Register", "Auth");
+            }
 
-                // Redirect to Students List page after login
+            // Verify the hashed password
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+            if (result == PasswordVerificationResult.Success)
+            {
+                // Successful login logic here
+                HttpContext.Session.SetString("UserEmail", user.Email);
+                TempData["SuccessMessage"] = "Login successful! Welcome back.";
                 return RedirectToAction("List", "Students");
             }
 
-            // If login fails
             ModelState.AddModelError(string.Empty, "Invalid email or password");
             return View(model);
         }
+
 
         [HttpGet]
         public IActionResult Register()
@@ -51,42 +57,47 @@ namespace StudentPortal.Web.Controllers
             return View();
         }
 
-        [HttpPost]
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Check if the email already exists in the database
-                var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-                if (existingUser != null)
-                {
-                    ModelState.AddModelError("", "Email is already taken.");
-                    return View(model);
-                }
-
-                // Create a new user
-                var user = new User
-                {
-                    Name = model.Name,
-                    Email = model.Email,
-                    Password = model.Password // Ensure you hash passwords in production
-                };
-
-                // Save user to the database
-                await dbContext.Users.AddAsync(user);
-                await dbContext.SaveChangesAsync();
-
-                // Log the user in by storing the email in the session
-                HttpContext.Session.SetString("UserEmail", user.Email);
-
-                // Redirect to the Student list
-                return RedirectToAction("List", "Students");
+                return View(model); // Return to the view with validation errors
             }
 
-            // If we reach here, something went wrong (invalid model)
-            return View(model);
+            // Check if the email already exists
+            var existingUser = await dbContext.Users
+                .FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError(string.Empty, "Email already in use.");
+                return View(model);
+            }
+
+            // Create a new user
+            var user = new User
+            {
+                Name = model.Name, // Store the name
+                Email = model.Email,
+                Password = _passwordHasher.HashPassword(null, model.Password) // Hash the password
+            };
+
+            try
+            {
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync(); // Save changes to the database
+
+                TempData["SuccessMessage"] = "Registration successful! You can now log in.";
+                return RedirectToAction("Index", "Home"); // Redirect to login page
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while registering the user.");
+                return View(model);
+            }
         }
+
         [HttpPost]
         public IActionResult Logout()
         {

@@ -5,6 +5,38 @@
     ViewData["Title"] = "Register";
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorMessage" class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<script>
+    window.onload = function() {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        var successMessage = document.getElementById("successMessage");
+        if (successMessage) {
+            setTimeout(function() {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+    };
+</script>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
@@ -12,20 +44,23 @@
                 <div class="card-body">
                     <h2 class="text-center mb-4">Create an Account</h2>
 
-                    <form method="post">
+                    <form asp-action="Register" asp-controller="Auth" method="post">
                         <div class="form-group mb-3">
                             <label for="Name" class="form-label">Name</label>
                             <input asp-for="Name" type="text" class="form-control" placeholder="Enter your name" required />
+                            <span asp-validation-for="Name" class="text-danger"></span> <!-- Validation message -->
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="Email" class="form-label">Email</label>
                             <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span> <!-- Validation message -->
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="Password" class="form-label">Password</label>
                             <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" required />
+                            <span asp-validation-for="Password" class="text-danger"></span> <!-- Validation message -->
                         </div>
 
                         <button type="submit" class="btn btn-success w-100">Register</button>
@@ -39,4 +74,3 @@
         </div>
     </div>
 </div>
-
