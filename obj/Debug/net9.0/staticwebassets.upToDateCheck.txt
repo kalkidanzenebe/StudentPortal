@@ -62,6 +62,7 @@ C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\wwwroot\lib\jquery\dist
 C:\Users\hp\Desktop\CRUD\StudentPortal\StudentPortal.Web\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\logo.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

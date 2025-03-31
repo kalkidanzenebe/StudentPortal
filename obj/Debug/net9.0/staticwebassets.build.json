@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "UEifMDCKQjcGoVkDcyph/2oEF6SkDW7o0JX3HRLBpSg=",
+  "Hash": "UHUWXhL1a40fXlt8zaMrPa/s6Sf45tN+6rKndeKSg3o=",
   "Source": "StudentPortal.Web",
   "BasePath": "_content/StudentPortal.Web",
   "Mode": "Default",
@@ -1443,6 +1443,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\CRUD\\StudentPortal\\StudentPortal.Web\\wwwroot\\images\\logo.png",
+      "SourceId": "StudentPortal.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\CRUD\\StudentPortal\\StudentPortal.Web\\wwwroot\\",
+      "BasePath": "_content/StudentPortal.Web",
+      "RelativePath": "images/logo#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "f43ejb8msc",
+      "Integrity": "TwY0DJ/ljjBTDhauccJIAGGkSNTSeCtWUCAJNXWA6ko=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\logo.png"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\CRUD\\StudentPortal\\StudentPortal.Web\\wwwroot\\js\\site.js",
@@ -3320,6 +3341,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-jcY0RXFOlcp4VNTCcYQtWVZZBlr+ZY+AOv6/0S5dnF8="
+        }
+      ]
+    },
+    {
+      "Route": "images/logo.f43ejb8msc.png",
+      "AssetFile": "C:\\Users\\hp\\Desktop\\CRUD\\StudentPortal\\StudentPortal.Web\\wwwroot\\images\\logo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12007"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TwY0DJ/ljjBTDhauccJIAGGkSNTSeCtWUCAJNXWA6ko=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 31 Mar 2025 06:46:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "f43ejb8msc"
+        },
+        {
+          "Name": "label",
+          "Value": "images/logo.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TwY0DJ/ljjBTDhauccJIAGGkSNTSeCtWUCAJNXWA6ko="
+        }
+      ]
+    },
+    {
+      "Route": "images/logo.png",
+      "AssetFile": "C:\\Users\\hp\\Desktop\\CRUD\\StudentPortal\\StudentPortal.Web\\wwwroot\\images\\logo.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12007"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TwY0DJ/ljjBTDhauccJIAGGkSNTSeCtWUCAJNXWA6ko=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 31 Mar 2025 06:46:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-TwY0DJ/ljjBTDhauccJIAGGkSNTSeCtWUCAJNXWA6ko="
         }
       ]
     },

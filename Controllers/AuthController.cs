@@ -40,7 +40,7 @@ namespace StudentPortal.Web.Controllers
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
             if (result == PasswordVerificationResult.Success)
             {
-                // Successful login logic here
+               
                 HttpContext.Session.SetString("UserEmail", user.Email);
                 TempData["SuccessMessage"] = "Login successful! Welcome back.";
                 return RedirectToAction("List", "Students");
@@ -63,10 +63,10 @@ namespace StudentPortal.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model); // Return to the view with validation errors
+                return View(model);
             }
 
-            // Check if the email already exists
+            
             var existingUser = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.Email == model.Email);
             if (existingUser != null)
@@ -75,21 +75,21 @@ namespace StudentPortal.Web.Controllers
                 return View(model);
             }
 
-            // Create a new user
+            
             var user = new User
             {
-                Name = model.Name, // Store the name
+                Name = model.Name, 
                 Email = model.Email,
-                Password = _passwordHasher.HashPassword(null, model.Password) // Hash the password
+                Password = _passwordHasher.HashPassword(null, model.Password) 
             };
 
             try
             {
                 dbContext.Users.Add(user);
-                await dbContext.SaveChangesAsync(); // Save changes to the database
+                await dbContext.SaveChangesAsync(); 
 
                 TempData["SuccessMessage"] = "Registration successful! You can now log in.";
-                return RedirectToAction("Index", "Home"); // Redirect to login page
+                return RedirectToAction("Index", "Home"); 
             }
             catch (Exception)
             {
@@ -101,8 +101,8 @@ namespace StudentPortal.Web.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); // Clear all session data
-            return RedirectToAction("Index", "Home"); // Redirect to Login Page
+            HttpContext.Session.Clear(); 
+            return RedirectToAction("Index", "Home"); 
         }
 
     }

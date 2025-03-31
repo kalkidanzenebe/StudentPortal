@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentPortal.Web.Data;
 using StudentPortal.Web.Models;
 using StudentPortal.Web.Models.Entities;
+using StudentPortal.Web.Models.ViewModels;
 
 namespace StudentPortal.Web.Controllers
 {
@@ -21,9 +21,8 @@ namespace StudentPortal.Web.Controllers
         {
             return View();
         }
-
         [HttpPost]
-        public async Task<IActionResult> Add(AddStudentViewModel viewModel)
+        public IActionResult Add(AddStudentViewModel viewModel)
         {
             if (HttpContext.Session.GetString("UserEmail") == null)
                 return RedirectToAction("Login", "Auth");
@@ -36,78 +35,107 @@ namespace StudentPortal.Web.Controllers
                 Subscribe = viewModel.Subscribe
             };
 
-            await dbContext.Students.AddAsync(student);
-            await dbContext.SaveChangesAsync();
+            dbContext.Students.Add(student);
+            dbContext.SaveChanges();
 
             TempData["SuccessMessage"] = "Student added successfully!";
-            TempData["MessageType"] = "success";
-            return RedirectToAction("List", new { highlightId = student.Id });
+            TempData["HighlightId"] = student.Id;  // Store the Id for highlighting
+
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(Guid? highlightId = null)
+        public IActionResult List()
         {
-            if (HttpContext.Session.GetString("UserEmail") == null)
-                return RedirectToAction("Login", "Auth");
-
-            var students = await dbContext.Students.ToListAsync();
-            ViewBag.HighlightId = highlightId; // Pass the ID to the view
-
+            var students = dbContext.Students.ToList();
+            var highlightId = TempData["HighlightId"] as Guid?;
+            ViewBag.HighlightId = highlightId;  // Pass HighlightId for the student to highlight
             return View(students);
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public IActionResult Edit(Guid id)
         {
             if (HttpContext.Session.GetString("UserEmail") == null)
                 return RedirectToAction("Login", "Auth");
 
-            var student = await dbContext.Students.FindAsync(id);
+            var student = dbContext.Students.Find(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
             return View(student);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Student viewModel)
+        public IActionResult Edit(Student viewModel)
         {
             if (HttpContext.Session.GetString("UserEmail") == null)
                 return RedirectToAction("Login", "Auth");
 
-            var student = await dbContext.Students.FindAsync(viewModel.Id);
-            if (student is not null)
+            var student = dbContext.Students.Find(viewModel.Id);
+            if (student != null)
             {
                 student.Name = viewModel.Name;
                 student.Email = viewModel.Email;
                 student.Phone = viewModel.Phone;
                 student.Subscribe = viewModel.Subscribe;
 
-                await dbContext.SaveChangesAsync();
+                dbContext.SaveChanges();
 
                 TempData["SuccessMessage"] = "Student updated successfully!";
-                TempData["MessageType"] = "success"; // Add this line for success message type
-
+                TempData["HighlightId"] = student.Id;  // Store the Id for highlighting
             }
-            return RedirectToAction("List", new { highlightId = student.Id });
+
+            return RedirectToAction("List");
         }
 
-        [HttpPost]
-        [HttpPost]
-        public async Task<IActionResult> Delete(Student viewModel)
-        {
-            if (HttpContext.Session.GetString("UserEmail") == null)
-                return RedirectToAction("Login", "Auth");
 
-            var student = await dbContext.Students
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == viewModel.Id);
-            if (student is not null)
+        [HttpPost]
+        public IActionResult Delete(Guid id)
+        {
+            try
             {
-                dbContext.Students.Remove(student);
-                await dbContext.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Student deleted successfully!";
-                TempData["MessageType"] = "delete"; // Add this line for success message type
-                                                    // Add this line
+                var student = dbContext.Students.Find(id);
+                if (student != null)
+                {
+                    dbContext.Students.Remove(student);
+                    dbContext.SaveChanges();
+                    return Json(new { success = true, message = "Student deleted successfully!" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Student not found." });
+                }
             }
-            return RedirectToAction("List");
+            catch (Exception)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting the student." });
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(Guid id)
+        {
+            try
+            {
+                var student = dbContext.Students.Find(id);
+                if (student != null)
+                {
+                    dbContext.Students.Remove(student);
+                    dbContext.SaveChanges();
+                    return Json(new { success = true, message = "Student deleted successfully!" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Student not found." });
+                }
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting the student." });
+            }
         }
 
     }

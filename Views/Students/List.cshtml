@@ -1,35 +1,89 @@
 ﻿@using StudentPortal.Web.Models.Entities
 @model List<StudentPortal.Web.Models.Entities.Student>
+
 @if (TempData["SuccessMessage"] != null)
 {
     var messageType = TempData["MessageType"] as string;
-    var alertClass = messageType == "delete" ? "alert-danger" : "alert-success"; // Determine class based on message type
+    var alertClass = messageType == "delete" ? "alert-danger" : "alert-success";
     <div id="successMessage" class="alert @alertClass">
-        <!-- Use alert class based on message type -->
         @TempData["SuccessMessage"]
     </div>
 }
 
 <script>
-    window.onload = function() {
+    window.onload = function () {
         var successMessage = document.getElementById("successMessage");
         if (successMessage) {
-            setTimeout(function() {
+            setTimeout(function () {
                 successMessage.style.display = 'none';
-            }, 3000); // Message disappears after 3 seconds
+            }, 3000);
         }
 
-        // Scroll to the highlighted student if applicable
-        var highlightId = '@ViewBag.HighlightId';
-        if (highlightId) {
-            var highlightedRow = document.getElementById('student-' + highlightId);
-            if (highlightedRow) {
-                highlightedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+        // Highlight the newly added or updated student
+        var highlightedRow = document.querySelector(".table-success");
+        if (highlightedRow) {
+            // Scroll the highlighted row into view
+            highlightedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Remove the highlight after 4 seconds
+            setTimeout(function () {
+                highlightedRow.classList.remove("table-success");
+            }, 3000);
         }
     };
-</script>
 
+    let studentToDelete = null;
+
+    function confirmDelete(studentId, studentName, studentEmail, studentPhone) {
+        studentToDelete = studentId;
+
+        // Display student details in the modal
+        document.getElementById("studentName").innerText = studentName;
+        document.getElementById("studentEmail").innerText = studentEmail;
+        document.getElementById("studentPhone").innerText = studentPhone;
+
+        // Show the delete modal
+        $('#deleteModal').modal('show');
+    }
+
+    function deleteStudent() {
+        $.ajax({
+            url: '/Students/Delete/' + studentToDelete,
+            type: 'POST',
+            success: function (result) {
+                if (result.success) {
+                    $('#student-' + studentToDelete).remove();
+                    $('#deleteModal').modal('hide');
+
+                    var successMessage = document.createElement("div");
+                    successMessage.className = "alert alert-danger";
+                    successMessage.innerText = "Student deleted successfully!";
+                    successMessage.style.backgroundColor = '#f8d7da';
+                    successMessage.style.color = '#721c24';
+                    successMessage.style.border = '1px solid #f5c6cb';
+                    successMessage.style.padding = '10px';
+                    successMessage.style.marginTop = '20px';
+
+                    var tableContainer = document.querySelector("table");
+                    tableContainer.parentNode.insertBefore(successMessage, tableContainer);
+
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                alert("An error occurred while deleting the student.");
+            }
+        });
+    }
+
+    function redirectToList() {
+        window.location.href = '/Students/List';
+    }
+</script>
 
 <h1>Students</h1>
 
@@ -41,25 +95,48 @@
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Phone</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var student in Model)
         {
-            var highlightClass = student.Id == ViewBag.HighlightId ? "table-success" : ""; // Change class if highlighted
+            var highlightClass = TempData["HighlightId"] != null && student.Id == (Guid)TempData["HighlightId"] ? "table-success" : "";
             <tr id="student-@student.Id" class="@highlightClass">
                 <td>@student.Id</td>
                 <td>@student.Name</td>
                 <td>@student.Email</td>
+                <td>@student.Phone</td>
                 <td>
                     <a class="btn btn-primary" asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id">Edit</a>
-                    <form method="post" action="@Url.Action("Delete", "Students")" style="display:inline;">
-                        <input type="hidden" name="id" value="@student.Id" />
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    <button class="btn btn-danger" onclick="confirmDelete('@student.Id', '@student.Name', '@student.Email', '@student.Phone')">Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Modal for Delete Confirmation -->
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Are you sure you want to delete this student?</p>
+                <p><strong>Name:</strong> <span id="studentName"></span></p>
+                <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+                <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="redirectToList()">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton" onclick="deleteStudent()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
