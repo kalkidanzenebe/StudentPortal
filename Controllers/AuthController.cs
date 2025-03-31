@@ -19,7 +19,7 @@ namespace StudentPortal.Web.Controllers
         }
 
         [HttpPost]
-        
+
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -40,7 +40,7 @@ namespace StudentPortal.Web.Controllers
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
             if (result == PasswordVerificationResult.Success)
             {
-               
+
                 HttpContext.Session.SetString("UserEmail", user.Email);
                 TempData["SuccessMessage"] = "Login successful! Welcome back.";
                 return RedirectToAction("List", "Students");
@@ -66,7 +66,7 @@ namespace StudentPortal.Web.Controllers
                 return View(model);
             }
 
-            
+
             var existingUser = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.Email == model.Email);
             if (existingUser != null)
@@ -75,21 +75,21 @@ namespace StudentPortal.Web.Controllers
                 return View(model);
             }
 
-            
+
             var user = new User
             {
-                Name = model.Name, 
+                Name = model.Name,
                 Email = model.Email,
-                Password = _passwordHasher.HashPassword(null, model.Password) 
+                Password = _passwordHasher.HashPassword(null, model.Password)
             };
 
             try
             {
                 dbContext.Users.Add(user);
-                await dbContext.SaveChangesAsync(); 
+                await dbContext.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Registration successful! You can now log in.";
-                return RedirectToAction("Index", "Home"); 
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception)
             {
@@ -101,8 +101,8 @@ namespace StudentPortal.Web.Controllers
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); 
-            return RedirectToAction("Index", "Home"); 
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
     }
