@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentPortal.Web.Data;
 using StudentPortal.Web.Models;
@@ -7,6 +8,7 @@ using StudentPortal.Web.Models.ViewModels;
 
 namespace StudentPortal.Web.Controllers
 {
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext dbContext;

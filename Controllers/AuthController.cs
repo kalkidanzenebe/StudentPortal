@@ -4,9 +4,11 @@ using StudentPortal.Web.Data;
 using StudentPortal.Web.Models.Entities;
 using StudentPortal.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentPortal.Web.Controllers
 {
+    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly ApplicationDbContext dbContext;

@@ -1,4 +1,5 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentPortal.Web.Models;
 
@@ -13,10 +14,10 @@ namespace StudentPortal.Web.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous] 
         public IActionResult Index()
         {
             return View();
         }
-
     }
 }
