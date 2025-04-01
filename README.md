@@ -27,13 +27,8 @@ A secure ASP.NET Core MVC web application for managing student information with 
 - **Authentication**: Cookie-based
 - **Validation**: ASP.NET Core Model Validation
 
-## Installation ⚙️
-1. **Clone Repository**
-   ```powershell
-   git clone https://github.com/yourusername/student-portal.git
-   cd student-portal
 
-## Installation and Setup
+## Installation and Setup ⚙️
 ### 1. Clone the Repository
 ```sh
 git clone https://github.com/kalkidanzenebe/StudentPortal.git
