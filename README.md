@@ -1,21 +1,37 @@
-# Student Portal Web Application
+# Student Portal System 🎓
 
-## Overview
-The **Student Portal** is a web application built using **ASP.NET Core MVC, Entity Framework Core, and SQL Server**. It allows users to register, log in, and manage student records.
+A secure ASP.NET Core MVC web application for managing student information with authentication and CRUD operations.
 
-## Features
-- **User Authentication** (Register, Login, Logout)
-- **Student Management** (Add, Edit, Delete, List)
-- **Session-Based Authorization** (Only logged-in users can access student records)
-- **Responsive UI** built with Bootstrap
-- **Data Persistence** using SQL Server with Entity Framework Core
+## Features ✨
+- **User Authentication** 🔐
+  - Registration & Login/Logout
+  - Session management
+- **Student Management** 📚
+  - Add new students
+  - Edit existing records
+  - Delete students
+  - Real-time validation
+- **Modern UI** 💅
+  - Responsive design
+  - Font Awesome icons
+  - Smooth animations
+- **Security** 🛡️
+  - Secure password hashing
+  - Protected routes
+  - Sensitive data protection
 
-## Technologies Used
-- **ASP.NET Core MVC** - Backend framework
-- **Entity Framework Core** - ORM for database interactions
-- **SQL Server** - Database
-- **Bootstrap** - Frontend UI framework
-- **Git & GitHub** - Version control
+## Technologies 🛠️
+- **Backend**: ASP.NET Core 7 MVC
+- **Database**: Entity Framework Core (Code First)
+- **Frontend**: Bootstrap 5, Font Awesome
+- **Authentication**: Cookie-based
+- **Validation**: ASP.NET Core Model Validation
+
+## Installation ⚙️
+1. **Clone Repository**
+   ```powershell
+   git clone https://github.com/yourusername/student-portal.git
+   cd student-portal
 
 ## Installation and Setup
 ### 1. Clone the Repository
@@ -25,19 +41,37 @@ cd StudentPortal
 ```
 
 ### 2. Configure Database
-- Open `appsettings.json` and update your database connection string.
-- Run the following command to apply migrations:
-  ```sh
-  dotnet ef database update
   ```
-
+dotnet ef database update
+  ```
+### 3. Configure Database
+  ```
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "your_connection_string"
+  ```
 ### 3. Run the Application
 ```sh
 dotnet run
 ```
+### Configuration ⚙️
+#### appsettings.Template.json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+### Environment Variables
+```
+#Development
+$env:ASPNETCORE_ENVIRONMENT = "Development"
 
-The application should now be running on `https://localhost:5001/` (or the configured port).
-
+# Production
+$env:ConnectionStrings__DefaultConnection = "Server=prod;Database=Students;..."
+ ```
 ## Usage
 1. **Register a User** - Open the `/Auth/Register` page and create an account.
 2. **Login** - Use the registered credentials to log in.
