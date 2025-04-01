@@ -39,7 +39,7 @@ cd StudentPortal
   ```
 dotnet ef database update
   ```
-### 3. Configure Database
+### 3. Configure Secrets (Development)
   ```
 dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "your_connection_string"
@@ -50,7 +50,7 @@ dotnet run
 ```
 ### Configuration ⚙️
 #### appsettings.Template.json
-```
+```json
 {
   "Logging": {
     "LogLevel": {
