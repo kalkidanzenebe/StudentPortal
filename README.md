@@ -50,6 +50,7 @@ dotnet run
 ```
 ### Configuration ⚙️
 #### appsettings.Template.json
+```
 {
   "Logging": {
     "LogLevel": {
@@ -59,6 +60,7 @@ dotnet run
   },
   "AllowedHosts": "*"
 }
+```
 ### Environment Variables
 ```
 #Development
