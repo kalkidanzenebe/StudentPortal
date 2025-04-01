@@ -1,6 +1,15 @@
 ﻿@using StudentPortal.Web.Models.Entities
 @model List<StudentPortal.Web.Models.Entities.Student>
 
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="text-end mb-3">
+        <form asp-controller="Auth" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+}
 @if (TempData["SuccessMessage"] != null)
 {
     var messageType = TempData["MessageType"] as string;

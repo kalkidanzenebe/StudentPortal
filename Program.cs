@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddControllersWithViews(options =>
 {
-    // ✅ Enforce authentication globally
+    // Enforce authentication globally
     var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
@@ -26,11 +26,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StudentPortal")));
 builder.Services.AddSession();
 
+// Configure authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Home/Index";
+        options.LoginPath = "/Home/Index"; // Login form is on Home/Index
         options.AccessDeniedPath = "/Home/Index";
+        options.Cookie.HttpOnly = true;
+        options.SlidingExpiration = true;
     });
 
 builder.Services.AddAuthorization();
@@ -49,20 +52,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 
-// 🔹 Middleware to redirect unauthorized users to Home/Index
-app.Use(async (context, next) =>
-{
-    if (!context.User.Identity.IsAuthenticated &&
-        !context.Request.Path.StartsWithSegments("/Auth") &&
-        !context.Request.Path.Equals("/Home/Index", StringComparison.OrdinalIgnoreCase)) // ✅ Allow Home/Index
-    {
-        context.Response.Redirect("/Home/Index");
-        return;
-    }
-    await next();
-});
-
-
+// Authentication & Authorization middleware (MUST be after UseRouting)
 app.UseAuthentication();
 app.UseAuthorization();
 

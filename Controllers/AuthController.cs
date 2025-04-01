@@ -5,6 +5,9 @@ using StudentPortal.Web.Models.Entities;
 using StudentPortal.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace StudentPortal.Web.Controllers
 {
@@ -21,13 +24,9 @@ namespace StudentPortal.Web.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
 
             var user = await dbContext.Users
                 .FirstOrDefaultAsync(u => u.Email == model.Email);
@@ -35,23 +34,33 @@ namespace StudentPortal.Web.Controllers
             if (user == null)
             {
                 TempData["ErrorMessage"] = "You are not registered. Please sign up.";
-                return RedirectToAction("Register", "Auth");
+                return RedirectToAction("Register");
             }
 
-            // Verify the hashed password
+            // Verify password
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
-            if (result == PasswordVerificationResult.Success)
+            if (result != PasswordVerificationResult.Success)
             {
-
-                HttpContext.Session.SetString("UserEmail", user.Email);
-                TempData["SuccessMessage"] = "Login successful! Welcome back.";
-                return RedirectToAction("List", "Students");
+                ModelState.AddModelError(string.Empty, "Invalid email or password");
+                return RedirectToAction("Index", "Home"); // Redirect back to login page
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid email or password");
-            return View(model);
-        }
+            // ✅ Sign in with cookie authentication
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Email, user.Email),
+        new Claim(ClaimTypes.Name, user.Name)
+    };
 
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity)
+            );
+
+            // ✅ Force redirect to Students/List (ignore returnUrl)
+            return RedirectToAction("List", "Students");
+        }
 
         [HttpGet]
         public IActionResult Register()
@@ -99,13 +108,18 @@ namespace StudentPortal.Web.Controllers
                 return View(model);
             }
         }
-
         [HttpPost]
-        public IActionResult Logout()
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
+            // Sign out the user from cookie authentication
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Optional: Add a logout success message
+            TempData["SuccessMessage"] = "You have been logged out.";
+
+            // Redirect to Home/Index (login page)
             return RedirectToAction("Index", "Home");
         }
-
     }
 }

@@ -26,8 +26,7 @@ namespace StudentPortal.Web.Controllers
         [HttpPost]
         public IActionResult Add(AddStudentViewModel viewModel)
         {
-            if (HttpContext.Session.GetString("UserEmail") == null)
-                return RedirectToAction("Login", "Auth");
+            
 
             var student = new Student
             {
@@ -59,8 +58,7 @@ namespace StudentPortal.Web.Controllers
         [HttpGet]
         public IActionResult Edit(Guid id)
         {
-            if (HttpContext.Session.GetString("UserEmail") == null)
-                return RedirectToAction("Login", "Auth");
+            
 
             var student = dbContext.Students.Find(id);
             if (student == null)
@@ -73,8 +71,6 @@ namespace StudentPortal.Web.Controllers
         [HttpPost]
         public IActionResult Edit(Student viewModel)
         {
-            if (HttpContext.Session.GetString("UserEmail") == null)
-                return RedirectToAction("Login", "Auth");
 
             var student = dbContext.Students.Find(viewModel.Id);
             if (student != null)
