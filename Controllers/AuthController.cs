@@ -37,7 +37,7 @@ namespace StudentPortal.Web.Controllers
                 return RedirectToAction("Register");
             }
 
-            // Verify password
+            
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
             if (result != PasswordVerificationResult.Success)
             {
@@ -45,7 +45,7 @@ namespace StudentPortal.Web.Controllers
                 return RedirectToAction("Index", "Home"); // Redirect back to login page
             }
 
-            // ✅ Sign in with cookie authentication
+            
             var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Email, user.Email),
@@ -58,7 +58,7 @@ namespace StudentPortal.Web.Controllers
                 new ClaimsPrincipal(claimsIdentity)
             );
 
-            // ✅ Force redirect to Students/List (ignore returnUrl)
+            
             return RedirectToAction("List", "Students");
         }
 
@@ -112,13 +112,13 @@ namespace StudentPortal.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // Sign out the user from cookie authentication
+           
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            // Optional: Add a logout success message
+            
             TempData["SuccessMessage"] = "You have been logged out.";
 
-            // Redirect to Home/Index (login page)
+            
             return RedirectToAction("Index", "Home");
         }
     }

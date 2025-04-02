@@ -40,7 +40,7 @@ namespace StudentPortal.Web.Controllers
             dbContext.SaveChanges();
 
             TempData["SuccessMessage"] = "Student added successfully!";
-            TempData["HighlightId"] = student.Id;  // Store the Id for highlighting
+            TempData["HighlightId"] = student.Id;  
 
             return RedirectToAction("List");
         }
@@ -50,7 +50,7 @@ namespace StudentPortal.Web.Controllers
         {
             var students = dbContext.Students.ToList();
             var highlightId = TempData["HighlightId"] as Guid?;
-            ViewBag.HighlightId = highlightId;  // Pass HighlightId for the student to highlight
+            ViewBag.HighlightId = highlightId;  
             return View(students);
         }
 
@@ -83,7 +83,7 @@ namespace StudentPortal.Web.Controllers
                 dbContext.SaveChanges();
 
                 TempData["SuccessMessage"] = "Student updated successfully!";
-                TempData["HighlightId"] = student.Id;  // Store the Id for highlighting
+                TempData["HighlightId"] = student.Id;  
             }
 
             return RedirectToAction("List");

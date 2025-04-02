@@ -25,3 +25,7 @@ obj/
 appsettings.Development.json
 appsettings.Production.json
 .env
+# Configuration
+appsettings.json
+appsettings.*.json
+!appsettings.Template.json

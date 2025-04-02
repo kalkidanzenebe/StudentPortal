@@ -229,9 +229,9 @@
 </div>
 
 <script>
-    // Enhanced JavaScript with animations
+    
     window.onload = function () {
-        // Auto-hide messages
+        
         const successMessage = document.getElementById("successMessage");
         if (successMessage) {
             setTimeout(() => {
@@ -240,7 +240,6 @@
             }, 3000);
         }
 
-        // Highlight animation
         const highlightedRow = document.querySelector(".table-success");
         if (highlightedRow) {
             highlightedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -270,24 +269,23 @@
                     $('#student-' + studentToDelete).remove();
                     $('#deleteModal').modal('hide');
 
-                    // Create message element
                     const successMessage = document.createElement("div");
                     successMessage.className = "alert alert-danger fade-in";
                     successMessage.innerHTML = `
                         <i class="fas fa-trash me-2"></i>Student deleted successfully!
                     `;
 
-                    // Insert message after header
+                   
                     const header = document.querySelector('.sticky-header');
                     header.parentNode.insertBefore(successMessage, header.nextSibling);
 
-                    // Scroll to top smoothly
+                    
                     window.scrollTo({
                         top: 0,
                         behavior: 'smooth'
                     });
 
-                    // Auto-remove after 3 seconds
+                    
                     setTimeout(() => {
                         successMessage.classList.add('fade-out');
                         setTimeout(() => successMessage.remove(), 300);

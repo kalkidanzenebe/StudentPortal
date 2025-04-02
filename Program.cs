@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
+
 builder.Services.AddControllersWithViews(options =>
 {
-    // Enforce authentication globally
+   
     var policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
@@ -26,11 +26,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StudentPortal")));
 builder.Services.AddSession();
 
-// Configure authentication
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Home/Index"; // Login form is on Home/Index
+        options.LoginPath = "/Home/Index"; 
         options.AccessDeniedPath = "/Home/Index";
         options.Cookie.HttpOnly = true;
         options.SlidingExpiration = true;
@@ -52,7 +52,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 
-// Authentication & Authorization middleware (MUST be after UseRouting)
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -470,3 +470,5 @@ C:\Users\hp\StudentPortal\obj\Debug\net9.0\refint\StudentPortal.Web.dll
 C:\Users\hp\StudentPortal\obj\Debug\net9.0\StudentPortal.Web.pdb
 C:\Users\hp\StudentPortal\obj\Debug\net9.0\StudentPortal.Web.genruntimeconfig.cache
 C:\Users\hp\StudentPortal\obj\Debug\net9.0\ref\StudentPortal.Web.dll
+C:\Users\hp\StudentPortal\bin\Debug\net9.0\appsettings.Development.Template.json
+C:\Users\hp\StudentPortal\bin\Debug\net9.0\appsettings.Template.json
