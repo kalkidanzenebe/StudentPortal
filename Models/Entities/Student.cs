@@ -32,8 +32,10 @@ namespace StudentPortal.Web.Models.Entities
         [Column(TypeName = "decimal(3,2)")]
         [Range(0.00, 4.00, ErrorMessage = "GPA must be between 0.00 and 4.00")]
         public decimal GPA { get; set; }
+        
 
         public Guid UserId { get; set; }
         public User? User { get; set; }
     }
+
 }

@@ -1,15 +1,502 @@
 ﻿{
-  "Scenario": "SentenceSimilarity",
+  "Scenario": "Regression",
+  "DataSource": {
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Users\\hp\\Desktop\\student.csv",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "Id",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Name",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Email",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Phone",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "LearningStyle",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "AcademicGoal",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "CareerInterest",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Age",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Location",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "PrimaryLanguage",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "PersonalityType",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "TechnicalSkills",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Extracurriculars",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "AccessedResources",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "GPA",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "UserId",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      }
+    ]
+  },
   "Environment": {
     "Type": "LocalCPU",
     "Version": 1
   },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.021776640241035917,
+        "RuntimeInSeconds": 0.862,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e10 * e11 * e13",
+          "e0": {
+            "OutputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage"
+            ],
+            "InputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Id",
+              "Age",
+              "UserId"
+            ],
+            "InputColumnNames": [
+              "Id",
+              "Age",
+              "UserId"
+            ]
+          },
+          "e10": {
+            "InputColumnName": "AccessedResources",
+            "OutputColumnName": "AccessedResources"
+          },
+          "e11": {
+            "InputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage",
+              "Id",
+              "Age",
+              "UserId",
+              "Name",
+              "Email",
+              "Phone",
+              "CareerInterest",
+              "Location",
+              "PersonalityType",
+              "TechnicalSkills",
+              "Extracurriculars",
+              "AccessedResources"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e13": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "GPA",
+            "FeatureColumnName": "Features"
+          },
+          "e2": {
+            "InputColumnName": "Name",
+            "OutputColumnName": "Name"
+          },
+          "e3": {
+            "InputColumnName": "Email",
+            "OutputColumnName": "Email"
+          },
+          "e4": {
+            "InputColumnName": "Phone",
+            "OutputColumnName": "Phone"
+          },
+          "e5": {
+            "InputColumnName": "CareerInterest",
+            "OutputColumnName": "CareerInterest"
+          },
+          "e6": {
+            "InputColumnName": "Location",
+            "OutputColumnName": "Location"
+          },
+          "e7": {
+            "InputColumnName": "PersonalityType",
+            "OutputColumnName": "PersonalityType"
+          },
+          "e8": {
+            "InputColumnName": "TechnicalSkills",
+            "OutputColumnName": "TechnicalSkills"
+          },
+          "e9": {
+            "InputColumnName": "Extracurriculars",
+            "OutputColumnName": "Extracurriculars"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LightGbmRegression",
+        "Score": -0.11627707703515214,
+        "RuntimeInSeconds": 0.882,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e10 * e11 * e14",
+          "e0": {
+            "OutputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage"
+            ],
+            "InputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Id",
+              "Age",
+              "UserId"
+            ],
+            "InputColumnNames": [
+              "Id",
+              "Age",
+              "UserId"
+            ]
+          },
+          "e10": {
+            "InputColumnName": "AccessedResources",
+            "OutputColumnName": "AccessedResources"
+          },
+          "e11": {
+            "InputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage",
+              "Id",
+              "Age",
+              "UserId",
+              "Name",
+              "Email",
+              "Phone",
+              "CareerInterest",
+              "Location",
+              "PersonalityType",
+              "TechnicalSkills",
+              "Extracurriculars",
+              "AccessedResources"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e14": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 1.0,
+            "NumberOfTrees": 4,
+            "SubsampleFraction": 1.0,
+            "MaximumBinCountPerFeature": 254,
+            "FeatureFraction": 1.0,
+            "L1Regularization": 2E-10,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "GPA",
+            "FeatureColumnName": "Features"
+          },
+          "e2": {
+            "InputColumnName": "Name",
+            "OutputColumnName": "Name"
+          },
+          "e3": {
+            "InputColumnName": "Email",
+            "OutputColumnName": "Email"
+          },
+          "e4": {
+            "InputColumnName": "Phone",
+            "OutputColumnName": "Phone"
+          },
+          "e5": {
+            "InputColumnName": "CareerInterest",
+            "OutputColumnName": "CareerInterest"
+          },
+          "e6": {
+            "InputColumnName": "Location",
+            "OutputColumnName": "Location"
+          },
+          "e7": {
+            "InputColumnName": "PersonalityType",
+            "OutputColumnName": "PersonalityType"
+          },
+          "e8": {
+            "InputColumnName": "TechnicalSkills",
+            "OutputColumnName": "TechnicalSkills"
+          },
+          "e9": {
+            "InputColumnName": "Extracurriculars",
+            "OutputColumnName": "Extracurriculars"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastTreeRegression",
+        "Score": -27.872939692541316,
+        "RuntimeInSeconds": 0.608,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e10 * e11 * e12",
+          "e0": {
+            "OutputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage"
+            ],
+            "InputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Id",
+              "Age",
+              "UserId"
+            ],
+            "InputColumnNames": [
+              "Id",
+              "Age",
+              "UserId"
+            ]
+          },
+          "e10": {
+            "InputColumnName": "AccessedResources",
+            "OutputColumnName": "AccessedResources"
+          },
+          "e11": {
+            "InputColumnNames": [
+              "LearningStyle",
+              "AcademicGoal",
+              "PrimaryLanguage",
+              "Id",
+              "Age",
+              "UserId",
+              "Name",
+              "Email",
+              "Phone",
+              "CareerInterest",
+              "Location",
+              "PersonalityType",
+              "TechnicalSkills",
+              "Extracurriculars",
+              "AccessedResources"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e12": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 254,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.099999999999999978,
+            "LabelColumnName": "GPA",
+            "FeatureColumnName": "Features",
+            "DiskTranspose": false
+          },
+          "e2": {
+            "InputColumnName": "Name",
+            "OutputColumnName": "Name"
+          },
+          "e3": {
+            "InputColumnName": "Email",
+            "OutputColumnName": "Email"
+          },
+          "e4": {
+            "InputColumnName": "Phone",
+            "OutputColumnName": "Phone"
+          },
+          "e5": {
+            "InputColumnName": "CareerInterest",
+            "OutputColumnName": "CareerInterest"
+          },
+          "e6": {
+            "InputColumnName": "Location",
+            "OutputColumnName": "Location"
+          },
+          "e7": {
+            "InputColumnName": "PersonalityType",
+            "OutputColumnName": "PersonalityType"
+          },
+          "e8": {
+            "InputColumnName": "TechnicalSkills",
+            "OutputColumnName": "TechnicalSkills"
+          },
+          "e9": {
+            "InputColumnName": "Extracurriculars",
+            "OutputColumnName": "Extracurriculars"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "OneHotEncoding",
+      "e1": "ReplaceMissingValues",
+      "e2": "FeaturizeText",
+      "e3": "FeaturizeText",
+      "e4": "FeaturizeText",
+      "e5": "FeaturizeText",
+      "e6": "FeaturizeText",
+      "e7": "FeaturizeText",
+      "e8": "FeaturizeText",
+      "e9": "FeaturizeText",
+      "e10": "FeaturizeText",
+      "e11": "Concatenate",
+      "e12": "FastTreeRegression",
+      "e13": "FastForestRegression",
+      "e14": "LightGbmRegression",
+      "e15": "LbfgsPoissonRegressionRegression",
+      "e16": "SdcaRegression"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e10 * e11 * (e12 + e13 + e14 + e15 + e16)",
+    "MetricName": "RSquared",
+    "ModelFilePath": "C:\\Users\\hp\\StudentPortal\\MLModel.mlnet"
+  },
   "Type": "TrainingConfig",
   "Version": 5,
   "TrainingOption": {
-    "Version": 1,
-    "Type": "SentenceSimilarityTrainingOption",
-    "TrainingTime": 2147483647,
-    "Epoch": 10
+    "Version": 2,
+    "Subsampling": false,
+    "Tuner": "eci-cfo",
+    "Type": "RegressionTrainingOption",
+    "TrainingTime": 10,
+    "OptimizeMetric": "RSquared",
+    "LabelColumn": "GPA",
+    "AvailableTrainers": [
+      "SDCA",
+      "LBFGS",
+      "LGBM",
+      "FASTTREE",
+      "FASTFOREST"
+    ],
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "CrossValidationValidationOption",
+      "NumberOfFolds": 5
+    }
   }
 }

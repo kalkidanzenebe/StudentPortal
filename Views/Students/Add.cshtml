@@ -172,12 +172,24 @@
                 </div>
                 <div class="row mb-4">
                     <div class="col-12">
-                        <!-- Replace GradesSerialized with -->
-                        <div class="form-group">
-                            <label asp-for="GPA" class="form-label"><i class="fas fa-star me-2"></i>GPA</label>
-                            <input asp-for="GPA" type="number" step="0.01" min="0" max="4"
-                                   class="form-control" placeholder="3.25" />
-                            <span asp-validation-for="GPA" class="text-danger"></span>
+    
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="GPA" class="form-label"><i class="fas fa-star me-2"></i>GPA</label>
+                                    <div class="input-group">
+                                        <input asp-for="GPA" type="number" step="0.01" min="0" max="4"
+                                               class="form-control" placeholder="3.25" id="GPA" />
+                                        <button asp-controller="Students" asp-action="PredictGPA" type="button" class="btn btn-info" id="predictGpaBtn">
+                                            <i class="fas fa-brain me-2"></i>Predict GPA
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="GPA" class="text-danger"></span>
+                                    <small class="form-text text-muted">
+                                        Click "Predict GPA" to get an AI-powered prediction based on student profile
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -222,6 +234,47 @@
             buttons.forEach(btn => {
                 btn.disabled = true;
                 btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status"></span> Processing...`;
+            });
+        });
+
+        $(document).ready(function() {
+            $('#predictGpaBtn').click(function() {
+                var $btn = $(this);
+                $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Predicting...');
+
+                // Get form values
+                var input = {
+                    Age: parseInt($('#Age').val()) || 20,
+                    LearningStyle: $('#LearningStyle').val() || 'Visual',
+                    AcademicGoal: $('#AcademicGoal').val() || 'Bachelor\'s Degree',
+                    CareerInterest: $('#CareerInterest').val() || 'Software Development',
+                    TechnicalSkills: $('#TechnicalSkills').val() || [],
+                    Extracurriculars: $('#Extracurriculars').val() || []
+                };
+
+                $.ajax({
+                    url: '@Url.Action("PredictGPA", "Students")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(input),
+                    success: function(response) {
+                        if (response.predictedGPA !== undefined) {
+                            $('#GPA').val(response.predictedGPA.toFixed(2));
+                            toastr.success(response.message);
+                        } else {
+                            $('#GPA').val('3.00');
+                            toastr.warning('Received invalid prediction response');
+                        }
+                    },
+                    error: function(xhr) {
+                        var errorMsg = xhr.responseJSON?.message || 'Prediction service unavailable';
+                        $('#GPA').val('3.00');
+                        toastr.error(errorMsg);
+                    },
+                    complete: function() {
+                        $btn.prop('disabled', false).html('<i class="fas fa-brain me-2"></i>Predict GPA');
+                    }
+                });
             });
         });
     </script>

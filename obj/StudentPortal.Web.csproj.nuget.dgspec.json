@@ -63,6 +63,18 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "Microsoft.ML": {
+              "target": "Package",
+              "version": "[4.0.2, )"
+            },
+            "Microsoft.ML.FastTree": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Plotly.NET": {
+              "target": "Package",
+              "version": "[3.0.1, )"
             }
           },
           "imports": [

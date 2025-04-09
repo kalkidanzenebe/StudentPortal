@@ -12,8 +12,8 @@ using StudentPortal.Web.Data;
 namespace StudentPortal.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250409054735_remoneoneproperty")]
-    partial class remoneoneproperty
+    [Migration("20250409074629_initialmigration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

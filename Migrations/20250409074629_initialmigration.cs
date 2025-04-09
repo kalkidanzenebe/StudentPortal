@@ -48,7 +48,6 @@ namespace StudentPortal.Web.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrimaryLanguage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonalityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MotivationTriggers = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TechnicalSkills = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Extracurriculars = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccessedResources = table.Column<string>(type: "nvarchar(max)", nullable: false),

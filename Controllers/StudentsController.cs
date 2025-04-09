@@ -7,6 +7,11 @@ using StudentPortal.Web.Models.Entities;
 using StudentPortal.Web.Models.ViewModels;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
+using StudentPortal.Web.Models;
+using StudentPortal_Web;
+using Microsoft.ML;
+using StudentPortal_Web;
+
 
 namespace StudentPortal.Web.Controllers
 {
@@ -208,10 +213,107 @@ namespace StudentPortal.Web.Controllers
                 return View(model);
             }
         }
+   
+private GPAOutputModel CalculateGPA(GPAInputModel input)
+    {
+        var modelInput = new MLModel.ModelInput
+        {
+            Age = input.Age,
+            LearningStyle = input.LearningStyle,
+            AcademicGoal = input.AcademicGoal,
+            CareerInterest = input.CareerInterest,
+            TechnicalSkills = string.Join(",", input.TechnicalSkills ?? new List<string>()),
+            Extracurriculars = string.Join(",", input.Extracurriculars ?? new List<string>()),
+            // Required fields with defaults
+            Name = "N/A",
+            Email = "N/A",
+            Phone = "N/A",
+            Location = "N/A",
+            PrimaryLanguage = "English",
+            PersonalityType = "N/A",
+            AccessedResources = "N/A",
+            Id = 0,
+            UserId = 0,
+            GPA = 0 // placeholder
+        };
 
-        [Authorize(Roles = "SuperAdmin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        var prediction = MLModel.Predict(modelInput);
+        return new GPAOutputModel
+        {
+            PredictedGPA = (float)Math.Round(prediction.Score, 2),
+            Confidence = 0.8f
+        };
+    }
+
+        // Add this endpoint to your controller
+        [Authorize(Roles = "Admin,SuperAdmin")]
+        [HttpPost("PredictGPA")]
+        public IActionResult PredictGPA([FromBody] GPAInputModel input)
+        {
+            try
+            {
+                if (input == null || input.Age <= 0)
+                {
+                    return BadRequest(new
+                    {
+                        message = "Please provide valid student information",
+                        predictedGPA = 3.0f
+                    });
+                }
+
+                // Create minimal valid input
+                var modelInput = new MLModel.ModelInput
+                {
+                    Age = input.Age,
+                    LearningStyle = input.LearningStyle ?? "Visual",
+                    AcademicGoal = input.AcademicGoal ?? "Bachelor's Degree",
+                    CareerInterest = input.CareerInterest ?? "Software Development",
+                    TechnicalSkills = string.Join(",", input.TechnicalSkills ?? new List<string>()),
+                    Extracurriculars = string.Join(",", input.Extracurriculars ?? new List<string>()),
+                    // Required fields with defaults
+                    Name = "PREDICTION",
+                    Email = "noreply@studentportal.com",
+                    Phone = "000-000-0000",
+                    Location = "Unknown",
+                    PrimaryLanguage = "English",
+                    PersonalityType = "INTJ",
+                    AccessedResources = "None",
+                    Id = 0,
+                    UserId = 0,
+                    GPA = 0f // placeholder
+                };
+
+                try
+                {
+                    var prediction = MLModel.Predict(modelInput);
+                    var predictedGPA = Math.Clamp(prediction.Score, 0f, 4f);
+
+                    return Ok(new
+                    {
+                        predictedGPA = predictedGPA,
+                        message = $"Predicted GPA: {predictedGPA:0.00}"
+                    });
+                }
+                catch (Exception modelEx)
+                {
+                    _logger.LogError(modelEx, "ML Model Error");
+                    return Ok(new
+                    {
+                        predictedGPA = 3.5f,
+                        message = "Using default prediction"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GPA Prediction Error");
+                return StatusCode(500, new
+                {
+                    predictedGPA = 3.0f,
+                    message = "Error predicting GPA - Using default value"
+                });
+            }
+        }
         public async Task<IActionResult> Delete(Guid id)
         {
             try
@@ -256,5 +358,15 @@ namespace StudentPortal.Web.Controllers
                 ViewBag.Users = new SelectList(Enumerable.Empty<SelectListItem>());
             }
         }
+        public class GPAInputModel
+        {
+            public int Age { get; set; }
+            public string? LearningStyle { get; set; }
+            public string? AcademicGoal { get; set; }
+            public string? CareerInterest { get; set; }
+            public List<string>? TechnicalSkills { get; set; }
+            public List<string>? Extracurriculars { get; set; }
+        }
+
     }
 }
