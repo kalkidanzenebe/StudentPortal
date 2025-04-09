@@ -1,114 +1,228 @@
-﻿@model StudentPortal.Web.Models.AddStudentViewModel
+﻿@using StudentPortal.Web.Models.ViewModels
+@model AddStudentViewModel
 
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-    
-    .card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-    }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-    .form-control {
-        border-radius: 8px;
-        padding: 12px 20px;
-    }
-
-    .btn-primary {
-        background: #4a90e2;
-        border: none;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-        .btn-primary:hover {
-            background: #357abd;
-            transform: scale(1.02);
-        }
-
-    .form-check-label {
-        margin-left: 5px;
-    }
-</style>
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-5 fw-bold text-primary">
-            <i class="fas fa-user-plus me-2"></i>Add Student
-        </h1>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <form asp-controller="Auth" asp-action="Logout" method="post">
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white py-3">
+            <h3 class="mb-0"><i class="fas fa-user-graduate me-2"></i>Add New Student</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Add" method="post">
                 @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                </button>
-            </form>
-        }
-    </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-body p-4">
-                    <form method="post">
-                        <div class="form-group mb-3">
-                            <label class="form-label">
-                                <i class="fas fa-user me-2"></i>Full Name
-                            </label>
-                            <input type="text" class="form-control" asp-for="Name"
-                                   placeholder="Enter student's full name">
-                            <span asp-validation-for="Name" class="text-danger small d-block mt-1"></span>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label">
-                                <i class="fas fa-envelope me-2"></i>Email Address
-                            </label>
-                            <input type="email" class="form-control" asp-for="Email"
-                                   placeholder="Enter student's email">
-                            <span asp-validation-for="Email" class="text-danger small d-block mt-1"></span>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label">
-                                <i class="fas fa-phone me-2"></i>Phone Number
-                            </label>
-                            <input type="text" class="form-control" asp-for="Phone"
-                                   placeholder="Enter student's phone number">
-                            <span asp-validation-for="Phone" class="text-danger small d-block mt-1"></span>
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="subscribed" asp-for="Subscribe">
-                                <label class="form-check-label" for="subscribed">
-                                    <i class="fas fa-bell me-2"></i>Subscribe to notifications
-                                </label>
+                <!-- Basic Information Section -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="Name" class="form-label"><i class="fas fa-user me-2"></i>Full Name</label>
+                                <input asp-for="Name" class="form-control @(ViewData.ModelState["Name"]?.Errors.Any() == true ? "is-invalid" : "")" placeholder="John Doe">
+                                <span asp-validation-for="Name" class="invalid-feedback"></span>
                             </div>
-                            <span asp-validation-for="Subscribe" class="text-danger small d-block mt-1"></span>
+                            <div class="col-md-4">
+                                <label asp-for="Email" class="form-label"><i class="fas fa-envelope me-2"></i>Email</label>
+                                <input asp-for="Email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Any() == true ? "is-invalid" : "")" placeholder="john@example.com">
+                                <span asp-validation-for="Email" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Phone" class="form-label"><i class="fas fa-phone me-2"></i>Phone</label>
+                                <input asp-for="Phone" class="form-control @(ViewData.ModelState["Phone"]?.Errors.Any() == true ? "is-invalid" : "")" placeholder="+1 234 567 890">
+                                <span asp-validation-for="Phone" class="invalid-feedback"></span>
+                            </div>
                         </div>
-
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-save me-2"></i>Add Student
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <!-- Demographic Information Section -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="text-primary mb-3"><i class="fas fa-globe me-2"></i>Demographic Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="Age" class="form-label"><i class="fas fa-calendar-alt me-2"></i>Age</label>
+                                <input asp-for="Age" type="number" class="form-control @(ViewData.ModelState["Age"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                <span asp-validation-for="Age" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Location" class="form-label"><i class="fas fa-map-marker-alt me-2"></i>Location</label>
+                                <select asp-for="Location" class="form-select @(ViewData.ModelState["Location"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                    <option value="">Select Location</option>
+                                    <option value="New York">New York</option>
+                                    <option value="Los Angeles">Los Angeles</option>
+                                    <option value="Chicago">Chicago</option>
+                                    <option value="Houston">Houston</option>
+                                </select>
+                                <span asp-validation-for="Location" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="PrimaryLanguage" class="form-label"><i class="fas fa-language me-2"></i>Primary Language</label>
+                                <select asp-for="PrimaryLanguage" class="form-select @(ViewData.ModelState["PrimaryLanguage"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                    <option value="">Select Language</option>
+                                    <option value="English">English</option>
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="Mandarin">Mandarin</option>
+                                    <option value="French">French</option>
+                                </select>
+                                <span asp-validation-for="PrimaryLanguage" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information Section -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="text-primary mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="LearningStyle" class="form-label"><i class="fas fa-brain me-2"></i>Learning Style</label>
+                                <select asp-for="LearningStyle" class="form-select @(ViewData.ModelState["LearningStyle"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                    <option value="">Select Learning Style</option>
+                                    <option value="Visual">Visual</option>
+                                    <option value="Auditory">Auditory</option>
+                                    <option value="Kinesthetic">Kinesthetic</option>
+                                </select>
+                                <span asp-validation-for="LearningStyle" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="AcademicGoal" class="form-label"><i class="fas fa-bullseye me-2"></i>Academic Goal</label>
+                                <select asp-for="AcademicGoal" class="form-select @(ViewData.ModelState["AcademicGoal"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                    <option value="">Select Academic Goal</option>
+                                    <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                    <option value="Master's Degree">Master's Degree</option>
+                                    <option value="PhD">PhD</option>
+                                    <option value="Professional Certification">Professional Certification</option>
+                                </select>
+                                <span asp-validation-for="AcademicGoal" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career & Skills Section -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="text-primary mb-3"><i class="fas fa-briefcase me-2"></i>Career & Skills</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="CareerInterest" class="form-label"><i class="fas fa-user-tie me-2"></i>Career Interest</label>
+                                <select asp-for="CareerInterest" class="form-select @(ViewData.ModelState["CareerInterest"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                    <option value="">Select Career Interest</option>
+                                    <option value="Software Development">Software Development</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Digital Marketing">Digital Marketing</option>
+                                </select>
+                                <span asp-validation-for="CareerInterest" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PersonalityType" class="form-label"><i class="fas fa-user-astronaut me-2"></i>Personality Type</label>
+                                <select asp-for="PersonalityType" class="form-select @(ViewData.ModelState["PersonalityType"]?.Errors.Any() == true ? "is-invalid" : "")">
+                                    <option value="">Select Personality Type</option>
+                                    <option value="INTJ">INTJ</option>
+                                    <option value="INTP">INTP</option>
+                                    <option value="ENTJ">ENTJ</option>
+                                    <option value="ENFP">ENFP</option>
+                                </select>
+                                <span asp-validation-for="PersonalityType" class="invalid-feedback"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-select Section -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="text-primary mb-3"><i class="fas fa-tasks me-2"></i>Skills & Activities</h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label asp-for="TechnicalSkills" class="form-label"><i class="fas fa-code me-2"></i>Technical Skills</label>
+                                <select asp-for="TechnicalSkills" class="form-select" multiple>
+                                    <option value="Python">Python</option>
+                                    <option value="Java">Java</option>
+                                    <option value="C#">C#</option>
+                                    <option value="JavaScript">JavaScript</option>
+                                    <option value="SQL">SQL</option>
+                                </select>
+                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Extracurriculars" class="form-label"><i class="fas fa-futbol me-2"></i>Extracurriculars</label>
+                                <select asp-for="Extracurriculars" class="form-select" multiple>
+                                    <option value="Chess Club">Chess Club</option>
+                                    <option value="Football">Football</option>
+                                    <option value="Debate Team">Debate Team</option>
+                                    <option value="Music Band">Music Band</option>
+                                </select>
+                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="AccessedResources" class="form-label"><i class="fas fa-book-open me-2"></i>Accessed Resources</label>
+                                <select asp-for="AccessedResources" class="form-select" multiple>
+                                    <option value="Online Library">Online Library</option>
+                                    <option value="Tutoring Center">Tutoring Center</option>
+                                    <option value="Study Groups">Study Groups</option>
+                                    <option value="E-books">E-books</option>
+                                </select>
+                                <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <!-- Replace GradesSerialized with -->
+                        <div class="form-group">
+                            <label asp-for="GPA" class="form-label"><i class="fas fa-star me-2"></i>GPA</label>
+                            <input asp-for="GPA" type="number" step="0.01" min="0" max="4"
+                                   class="form-control" placeholder="3.25" />
+                            <span asp-validation-for="GPA" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Assignment -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <h5 class="text-primary mb-3"><i class="fas fa-users-cog me-2"></i>User Assignment</h5>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-user-tag me-2"></i>Assigned User</label>
+                            <select asp-for="UserId" class="form-select @(ViewData.ModelState["UserId"]?.Errors.Any() == true ? "is-invalid" : "")" asp-items="ViewBag.Users">
+                                <option value="">-- Select User --</option>
+                            </select>
+                            <span asp-validation-for="UserId" class="invalid-feedback"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="card-footer bg-light mt-4">
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("List", "Students")" class="btn btn-outline-secondary px-4">
+                            <i class="fas fa-arrow-left me-2"></i>Back to List
+                        </a>
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="fas fa-save me-2"></i>Add Student
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<partial name="_ValidationScriptsPartial" />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const buttons = this.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status"></span> Processing...`;
+            });
+        });
+    </script>
+}

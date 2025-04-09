@@ -1,304 +1,190 @@
-﻿@using StudentPortal.Web.Models.Entities
-@model List<StudentPortal.Web.Models.Entities.Student>
-
-<!-- Add Font Awesome and Google Fonts -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-    /* Add these styles */
-    .table-container {
-        max-height: 65vh;
-        overflow-y: auto;
-        margin-top: 20px;
-        border-radius: 15px;
-    }
-
-    .sticky-header {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 1000;
-        padding: 20px 0;
-        box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-    }
-
-    .fixed-controls {
-        position: sticky;
-        top: 80px;
-        background: white;
-        z-index: 999;
-        padding-bottom: 15px;
-    }
-
-    /* Existing styles */
-    .card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-
-    .table {
-        margin-bottom: 0;
-    }
-
-        .table thead th {
-            background: #4a90e2;
-            color: white;
-            border-bottom: none;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        .table tbody tr {
-            transition: all 0.2s ease;
-        }
-
-            .table tbody tr:hover {
-                background-color: #f8f9fa;
-                transform: translateX(5px);
-            }
-
-    .btn-success {
-        background: #28a745;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-        .btn-success:hover {
-            background: #218838;
-            transform: scale(1.02);
-        }
-
-    .action-buttons .btn {
-        margin: 2px;
-        min-width: 80px;
-    }
-
-    .modal-header {
-        background: #4a90e2;
-        color: white;
-        border-radius: 15px 15px 0 0;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    .fade-in {
-        animation: fadeIn 0.3s ease-in;
-    }
-
-    .fade-out {
-        animation: fadeOut 0.3s ease-out;
-    }
-
-    @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @@keyframes fadeOut {
-        from {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        to {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-    }
-</style>
+﻿@model IEnumerable<StudentPortal.Web.Models.Entities.Student>
+@{
+    ViewData["Title"] = "Student List";
+}
 
 <div class="container mt-4">
-    <div class="sticky-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 class="display-5 fw-bold text-primary">
-                <i class="fas fa-users me-2"></i>Student List
-            </h1>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <form asp-controller="Auth" asp-action="Logout" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                    </button>
-                </form>
-            }
-        </div>
-
-        <div class="fixed-controls">
-            <a class="btn btn-success" href="@Url.Action("Add", "Students")">
-                <i class="fas fa-plus-circle me-2"></i>Add New Student
-            </a>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="fas fa-users me-2"></i>Student Management
+        </h1>
+        <a href="@Url.Action("Add")" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>Add New Student
+        </a>
     </div>
 
     @if (TempData["SuccessMessage"] != null)
     {
-        var messageType = TempData["MessageType"] as string;
-        var alertClass = messageType == "delete" ? "alert-danger" : "alert-success";
-        <div id="successMessage" class="alert @alertClass alert-dismissible fade show">
-            <i class="fas @(messageType == "delete" ? "fa-trash" : "fa-check") me-2"></i>
-            @TempData["SuccessMessage"]
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center">
+            <i class="fas fa-check-circle me-2"></i>
+            <div>@TempData["SuccessMessage"]</div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
         </div>
     }
 
-    <div class="table-container">
-        <table class="table table-hover mb-0">
-            <thead>
-                <tr>
-                    <th><i class="fas fa-id-card me-2"></i>ID</th>
-                    <th><i class="fas fa-user me-2"></i>Name</th>
-                    <th><i class="fas fa-envelope me-2"></i>Email</th>
-                    <th><i class="fas fa-phone me-2"></i>Phone</th>
-                    <th><i class="fas fa-tools me-2"></i>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var student in Model)
-                {
-                    var highlightClass = TempData["HighlightId"] != null && student.Id == (Guid)TempData["HighlightId"] ? "table-success" : "";
-                    <tr id="student-@student.Id" class="@highlightClass">
-                        <td>@student.Id</td>
-                        <td>@student.Name</td>
-                        <td>@student.Email</td>
-                        <td>@student.Phone</td>
-                        <td class="action-buttons">
-                            <a class="btn btn-primary btn-sm"
-                               asp-controller="Students"
-                               asp-action="Edit"
-                               asp-route-id="@student.Id">
-                                <i class="fas fa-edit me-1"></i>Edit
-                            </a>
-                            <button class="btn btn-danger btn-sm"
-                                    onclick="confirmDelete('@student.Id', '@student.Name', '@student.Email', '@student.Phone')">
-                                <i class="fas fa-trash me-1"></i>Delete
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <div>@TempData["ErrorMessage"]</div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-lg">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-list-ol me-2"></i>Student Directory</h4>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light-primary">
+                            <tr>
+                                <th class="ps-4">Student Name</th>
+                                <th>Contact</th>
+                                <th class="d-none d-lg-table-cell">Age</th>
+                                <th class="d-none d-xl-table-cell">Location</th>
+                                <th class="d-none d-md-table-cell">Learning Style</th>
+                                <th class="d-none d-lg-table-cell">Academic Goal</th>
+                                <th class="d-none d-xl-table-cell">Career Interest</th>
+                                <th class="d-none d-md-table-cell">Personality</th>
+                                <th class="d-none d-md-table-cell">GPA</th>
+                                <th class="text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr class="hover-shadow">
+                                    <td class="ps-4 fw-medium">@student.Name</td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="text-muted"><i class="fas fa-envelope me-2"></i>@student.Email</span>
+                                            <small class="text-muted"><i class="fas fa-phone me-2"></i>@student.Phone</small>
+                                        </div>
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">
+                                        <span class="badge bg-info rounded-pill">@student.Age years</span>
+                                    </td>
+                                    <td class="d-none d-xl-table-cell">
+                                        <i class="fas fa-map-marker-alt me-2"></i>@student.Location
+                                    </td>
+                                    <td class="d-none d-md-table-cell">
+                                        <span class="badge bg-primary">@student.LearningStyle</span>
+                                    </td>
+                                    <td class="d-none d-lg-table-cell">
+                                        <span class="badge bg-success">@student.AcademicGoal</span>
+                                    </td>
+                                    <td class="d-none d-xl-table-cell">
+                                        <span class="badge bg-warning text-dark">@student.CareerInterest</span>
+                                    </td>
+                                    <td class="d-none d-md-table-cell">
+                                        <span class="badge bg-danger">@student.PersonalityType</span>
+                                    </td>
+                                    <td class="d-none d-md-table-cell">
+                                        <span class="badge bg-purple">
+                                            @student.GPA.ToString("0.00")
+                                        </span>
+                                    </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <a href="@Url.Action("Edit", new { id = student.Id })"
+                                           class="btn btn-sm btn-warning rounded-pill px-3"
+                                           data-bs-toggle="tooltip" title="Edit Student">
+                                            <i class="fas fa-edit"></i>
+                                            <span class="d-none d-sm-inline ms-2">Edit</span>
+                                        </a>
+
+                                        @if (User.IsInRole("SuperAdmin"))
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm btn-danger rounded-pill px-3"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    data-student-id="@student.Id"
+                                                    data-bs-toggle="tooltip"
+                                                    title="Delete Student">
+                                                <i class="fas fa-trash"></i>
+                                                <span class="d-none d-sm-inline ms-2">Delete</span>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion
-                </h5>
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirm Delete</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this student?</p>
-                <div class="alert alert-warning">
-                    <ul class="mb-0">
-                        <li><strong>Name:</strong> <span id="studentName"></span></li>
-                        <li><strong>Email:</strong> <span id="studentEmail"></span></li>
-                        <li><strong>Phone:</strong> <span id="studentPhone"></span></li>
-                    </ul>
-                </div>
+                <p>Are you sure you want to permanently delete this student?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i>Cancel
-                </button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton" onclick="deleteStudent()">
-                    <i class="fas fa-trash me-1"></i>Delete
-                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    
-    window.onload = function () {
-        
-        const successMessage = document.getElementById("successMessage");
-        if (successMessage) {
-            setTimeout(() => {
-                successMessage.classList.add('fade-out');
-                setTimeout(() => successMessage.remove(), 300);
-            }, 3000);
+@section Styles {
+    <style>
+        .bg-light-primary {
+            background-color: #e3f2fd !important;
         }
 
-        const highlightedRow = document.querySelector(".table-success");
-        if (highlightedRow) {
-            highlightedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-                highlightedRow.style.transition = 'all 0.5s ease';
-                highlightedRow.classList.remove("table-success");
-            }, 3000);
+        .hover-shadow tr {
+            transition: all 0.2s ease;
         }
-    };
 
-    let studentToDelete = null;
-
-    function confirmDelete(studentId, studentName, studentEmail, studentPhone) {
-        studentToDelete = studentId;
-        document.getElementById("studentName").textContent = studentName;
-        document.getElementById("studentEmail").textContent = studentEmail;
-        document.getElementById("studentPhone").textContent = studentPhone;
-        new bootstrap.Modal(document.getElementById('deleteModal')).show();
-    }
-
-    function deleteStudent() {
-        $.ajax({
-            url: '/Students/Delete/' + studentToDelete,
-            type: 'POST',
-            success: function (result) {
-                if (result.success) {
-                    $('#student-' + studentToDelete).remove();
-                    $('#deleteModal').modal('hide');
-
-                    const successMessage = document.createElement("div");
-                    successMessage.className = "alert alert-danger fade-in";
-                    successMessage.innerHTML = `
-                        <i class="fas fa-trash me-2"></i>Student deleted successfully!
-                    `;
-
-                   
-                    const header = document.querySelector('.sticky-header');
-                    header.parentNode.insertBefore(successMessage, header.nextSibling);
-
-                    
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-
-                    
-                    setTimeout(() => {
-                        successMessage.classList.add('fade-out');
-                        setTimeout(() => successMessage.remove(), 300);
-                    }, 3000);
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function () {
-                alert("An error occurred while deleting the student.");
+            .hover-shadow tr:hover {
+                transform: translateX(4px);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
-        });
-    }
-</script>
 
-<partial name="_ValidationScriptsPartial" />
+        .table-hover tbody tr:hover td {
+            background-color: #f8f9fa;
+        }
+
+        .badge.rounded-pill {
+            padding: 0.5em 1em;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Initialize Bootstrap tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        // Delete Modal Handler
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteModal = document.getElementById('deleteModal')
+            const deleteForm = document.getElementById('deleteForm')
+
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget
+                const studentId = button.getAttribute('data-student-id')
+                deleteForm.action = `/Students/Delete/${studentId}`
+            })
+        })
+    </script>
+}

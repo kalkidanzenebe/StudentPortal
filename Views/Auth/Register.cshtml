@@ -10,7 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-    /* Consistent styling with login page */
+    /* Size reduction only */
+    .registration-card {
+        max-width: 400px; /* Reduced from 500px */
+        margin: 0 auto;
+    }
+
+    /* Original other styles preserved */
     .card {
         border: none;
         border-radius: 15px;
@@ -53,13 +59,9 @@
         cursor: pointer;
         color: #6c757d;
     }
-
-    .registration-card {
-        max-width: 500px;
-        margin: 0 auto;
-    }
 </style>
 
+<!-- Rest of the code remains identical -->
 @if (TempData["ErrorMessage"] != null)
 {
     <div id="errorMessage" class="alert alert-danger">
@@ -102,16 +104,22 @@
 
 <div class="container mt-5">
     <div class="text-center mb-4">
-        <h1 class="display-4 fw-bold text-success mb-3">
+        <h1 class="display-5 fw-bold text-success mb-3">
+            <!-- Changed from display-4 to display-5 -->
             <i class="fas fa-user-plus me-2"></i>Create Account
         </h1>
-        <p class="lead text-muted">Join our learning community</p>
+        <p class="text-muted" style="font-size: 0.95rem">
+            <!-- Added font-size reduction -->
+            Join our learning community
+        </p>
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
+        <div class="col-md-10 col-lg-8">
+            <!-- Increased column width for smaller size -->
             <div class="card registration-card">
                 <div class="card-body p-4">
+                    <!-- Rest of the form remains unchanged -->
                     <form asp-action="Register" asp-controller="Auth" method="post">
                         <div class="form-group mb-3">
                             <label class="form-label">

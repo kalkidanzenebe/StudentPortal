@@ -1,131 +1,217 @@
-﻿@model StudentPortal.Web.Models.Entities.Student
+﻿@model StudentPortal.Web.Models.ViewModels.EditStudentViewModel
 
+@{
+    ViewData["Title"] = "Edit Student";
+}
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-    
-    .card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-    }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-    .form-control {
-        border-radius: 8px;
-        padding: 12px 20px;
-    }
-
-    .btn-primary {
-        background: #4a90e2;
-        border: none;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-        .btn-primary:hover {
-            background: #357abd;
-            transform: scale(1.02);
-        }
-
-    .form-check-label {
-        margin-left: 5px;
-    }
-</style>
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-5 fw-bold text-primary">
-            <i class="fas fa-user-edit me-2"></i>Edit Student
-        </h1>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <form asp-controller="Auth" asp-action="Logout" method="post">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                </button>
-            </form>
-        }
-    </div>
-
-    @if (Model == null)
-    {
-        <div class="alert alert-warning">
-            <i class="fas fa-exclamation-triangle me-2"></i>No student found with this ID
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="fas fa-user-graduate me-2"></i>Edit Student</h3>
         </div>
-    }
-    else
-    {
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card">
-                    <div class="card-body p-4">
-                        <form method="post">
-                            <div class="form-group mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-id-card me-2"></i>Student ID
-                                </label>
-                                <input type="text" class="form-control" asp-for="Id" readonly
-                                       placeholder="Student ID">
-                            </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
 
-                            <div class="form-group mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-user me-2"></i>Full Name
-                                </label>
-                                <input type="text" class="form-control" asp-for="Name"
-                                       placeholder="Enter student's full name">
-                                <span asp-validation-for="Name" class="text-danger small d-block mt-1"></span>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-envelope me-2"></i>Email Address
-                                </label>
-                                <input type="email" class="form-control" asp-for="Email"
-                                       placeholder="Enter student's email">
-                                <span asp-validation-for="Email" class="text-danger small d-block mt-1"></span>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-phone me-2"></i>Phone Number
-                                </label>
-                                <input type="text" class="form-control" asp-for="Phone"
-                                       placeholder="Enter student's phone number">
-                                <span asp-validation-for="Phone" class="text-danger small d-block mt-1"></span>
-                            </div>
-
-                            <div class="form-group mb-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox"
-                                           id="subscribed" asp-for="Subscribe">
-                                    <label class="form-check-label" for="subscribed">
-                                        <i class="fas fa-bell me-2"></i>Subscription Status
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group mt-4">
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="fas fa-save me-2"></i>Update Student
-                                </button>
-                            </div>
-                        </form>
+                <!-- Basic Information Section -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    }
-</div>
 
-<partial name="_ValidationScriptsPartial" />
+                <!-- Demographic Information Section -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Age" class="form-label"></label>
+                            <input asp-for="Age" type="number" class="form-control" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Location" class="form-label"></label>
+                            <select asp-for="Location" class="form-select">
+                                <option value="">Select Location</option>
+                                <option value="New York">New York</option>
+                                <option value="Los Angeles">Los Angeles</option>
+                                <option value="Chicago">Chicago</option>
+                                <option value="Houston">Houston</option>
+                            </select>
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PrimaryLanguage" class="form-label"></label>
+                            <select asp-for="PrimaryLanguage" class="form-select">
+                                <option value="">Select Primary Language</option>
+                                <option value="English">English</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Mandarin">Mandarin</option>
+                                <option value="French">French</option>
+                            </select>
+                            <span asp-validation-for="PrimaryLanguage" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information Section -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="LearningStyle" class="form-label"></label>
+                            <select asp-for="LearningStyle" class="form-select">
+                                <option value="">Select Learning Style</option>
+                                <option value="Visual">Visual</option>
+                                <option value="Auditory">Auditory</option>
+                                <option value="Kinesthetic">Kinesthetic</option>
+                            </select>
+                            <span asp-validation-for="LearningStyle" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AcademicGoal" class="form-label"></label>
+                            <select asp-for="AcademicGoal" class="form-select">
+                                <option value="">Select Academic Goal</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                                <option value="Master's Degree">Master's Degree</option>
+                                <option value="PhD">PhD</option>
+                                <option value="Professional Certification">Professional Certification</option>
+                            </select>
+                            <span asp-validation-for="AcademicGoal" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career & Skills Section -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CareerInterest" class="form-label"></label>
+                            <select asp-for="CareerInterest" class="form-select">
+                                <option value="">Select Career Interest</option>
+                                <option value="Software Development">Software Development</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="Digital Marketing">Digital Marketing</option>
+                            </select>
+                            <span asp-validation-for="CareerInterest" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="PersonalityType" class="form-label"></label>
+                            <select asp-for="PersonalityType" class="form-select">
+                                <option value="">Select Personality Type</option>
+                                <option value="INTJ">INTJ</option>
+                                <option value="INTP">INTP</option>
+                                <option value="ENTJ">ENTJ</option>
+                                <option value="ENFP">ENFP</option>
+                            </select>
+                            <span asp-validation-for="PersonalityType" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-select List Inputs -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="TechnicalSkills" class="form-label"></label>
+                            <select asp-for="TechnicalSkills" class="form-select" multiple>
+                                <option value="Python">Python</option>
+                                <option value="Java">Java</option>
+                                <option value="C#">C#</option>
+                                <option value="JavaScript">JavaScript</option>
+                                <option value="SQL">SQL</option>
+                            </select>
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple.</small>
+                            <span asp-validation-for="TechnicalSkills" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Extracurriculars" class="form-label"></label>
+                            <select asp-for="Extracurriculars" class="form-select" multiple>
+                                <option value="Chess Club">Chess Club</option>
+                                <option value="Football">Football</option>
+                                <option value="Debate Team">Debate Team</option>
+                                <option value="Music Band">Music Band</option>
+                            </select>
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple.</small>
+                            <span asp-validation-for="Extracurriculars" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="AccessedResources" class="form-label"></label>
+                            <select asp-for="AccessedResources" class="form-select" multiple>
+                                <option value="Online Library">Online Library</option>
+                                <option value="Tutoring Center">Tutoring Center</option>
+                                <option value="Study Groups">Study Groups</option>
+                                <option value="E-books">E-books</option>
+                            </select>
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple.</small>
+                            <span asp-validation-for="AccessedResources" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label asp-for="GPA" class="form-label"><i class="fas fa-star me-2"></i>GPA</label>
+                            <input asp-for="GPA" type="number" step="0.01" min="0" max="4"
+                                   class="form-control" placeholder="3.25" />
+                            <span asp-validation-for="GPA" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Assignment -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="form-label">Assigned User</label>
+                            <select asp-for="UserId" class="form-select" asp-items="ViewBag.Users">
+                                <option value="">-- Select User --</option>
+                            </select>
+                            <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="@Url.Action("List", "Students")" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

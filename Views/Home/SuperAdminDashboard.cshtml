@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Super Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white">
+            <h3><i class="fas fa-user-crown me-2"></i>Super Admin Dashboard</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Admin Management</h5>
+                            <a asp-action="ListAdmin" asp-controller="Admins" class="btn btn-danger mb-2">
+                                <i class="fas fa-user-lock me-2"></i>Manage Admins
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">System Overview</h5>
+                            <p class="card-text">
+                                <i class="fas fa-users me-2"></i>Total Users: @ViewBag.TotalUsers
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-user-shield me-2"></i>Admins: @ViewBag.TotalAdmins
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

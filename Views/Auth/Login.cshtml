@@ -5,32 +5,90 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-lg rounded">
-                <div class="card-body">
-                    <h2 class="text-center mb-4">Login</h2>
+<style>
+    .password-wrapper {
+        position: relative;
+    }
 
-                    <form method="post">
-                        <div class="form-group mb-3">
-                            <label for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required />
-                        </div>
+    .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 10;
+        color: #6c757d;
+    }
+</style>
 
-                        <div class="form-group mb-3">
-                            <label for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" required />
-                        </div>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <h3 class="card-title mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Welcome Back!
+                    </h3>
+                </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
+                <form asp-controller="Auth" asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="text-center mt-3">
-                        <p>Don't have an account? <a href="@Url.Action("Register", "Auth")">Register here</a></p>
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email Address
+                        </label>
+                        <input type="email" class="form-control" id="email" name="Email" required
+                               placeholder="Enter your email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group mb-4">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Password
+                        </label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control" id="password" name="Password" required
+                                   placeholder="Enter your password">
+                            <i class="toggle-password fas fa-eye" id="eye-icon"></i>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-0">Don't have an account?</p>
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-primary mt-2">
+                        <i class="fas fa-user-plus me-2"></i>Create Account
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const eyeIcon = document.getElementById('eye-icon');
+            if(eyeIcon) {
+                eyeIcon.addEventListener('click', function() {
+                    const passwordField = document.getElementById('password');
+                    const isPassword = passwordField.type === 'password';
+
+                    passwordField.type = isPassword ? 'text' : 'password';
+                    this.classList.toggle('fa-eye-slash', !isPassword);
+                    this.classList.toggle('fa-eye', isPassword);
+                });
+            }
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,115 @@
+﻿@using StudentPortal.Web.Models.Entities
+@model List<User>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Admin Management</h1>
+        <a asp-action="AddAdmin" class="btn btn-success">
+            <i class="fas fa-plus me-2"></i>Add New Admin
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var admin in Model)
+                {
+                    <tr>
+                        <td>@admin.Name</td>
+                        <td>@admin.Email</td>
+                        <td>@admin.CreatedBy?.Name</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm delete-admin-btn"
+                                    data-id="@admin.Id"
+                                    data-name="@admin.Name"
+                                    data-email="@admin.Email"
+                                    data-createdby="@admin.CreatedBy?.Name">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteAdminModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirm Admin Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this admin?</p>
+                <dl class="row">
+                    <dt class="col-sm-3">Name:</dt>
+                    <dd class="col-sm-9" id="deleteAdminName"></dd>
+
+                    <dt class="col-sm-3">Email:</dt>
+                    <dd class="col-sm-9" id="deleteAdminEmail"></dd>
+
+                    <dt class="col-sm-3">Created By:</dt>
+                    <dd class="col-sm-9" id="deleteAdminCreatedBy"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteAdminForm" method="post" asp-action="DeleteAdmin">
+                    <input type="hidden" name="id" id="deleteAdminId" />
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-admin-btn');
+
+            deleteButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const adminId = this.dataset.id;
+                    const adminName = this.dataset.name;
+                    const adminEmail = this.dataset.email;
+                    const createdBy = this.dataset.createdby;
+
+                    document.getElementById('deleteAdminName').textContent = adminName;
+                    document.getElementById('deleteAdminEmail').textContent = adminEmail;
+                    document.getElementById('deleteAdminCreatedBy').textContent = createdBy || 'N/A';
+                    document.getElementById('deleteAdminId').value = adminId;
+
+                    new bootstrap.Modal(document.getElementById('deleteAdminModal')).show();
+                });
+            });
+        });
+    </script>
+}
