@@ -11,6 +11,9 @@
         <a href="@Url.Action("Add")" class="btn btn-primary btn-lg">
             <i class="fas fa-plus me-2"></i>Add New Student
         </a>
+        <a href="@Url.Action("ExportStudentsToCsv", "AI")" class="btn btn-success btn-lg">
+            <i class="fas fa-file-csv me-2"></i>Export to CSV
+        </a>
     </div>
 
     @if (TempData["SuccessMessage"] != null)

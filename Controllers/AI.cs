@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentPortal.Web.Data;
+using StudentPortal.Web.Models.Entities;
 
 namespace StudentPortal.Web.Controllers
 {
@@ -9,12 +10,14 @@ namespace StudentPortal.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public AI(ApplicationDbContext context )
+        public AI(ApplicationDbContext context)
         {
             _context = context;
-
-
         }
+
+        // Existing action methods...
+
+        [HttpGet]
         public async Task<IActionResult> ExportStudentsToCsv()
         {
             // Get the students data
@@ -27,12 +30,12 @@ namespace StudentPortal.Web.Controllers
             var csv = new StringBuilder();
 
             // Add header row
-            csv.AppendLine("Name,Email,Phone,Age,Location,LearningStyle,AcademicGoal,CareerInterest,GPA");
+            csv.AppendLine("Name,Email,Phone,Age,Location,LearningStyle,AcademicGoal,CareerInterest,PrimaryLanguage,PersonalityType,TechnicalSkills,Extracurriculars,AccessedResources,GPA");
 
             // Add data rows
             foreach (var student in students)
             {
-                csv.AppendLine($"\"{student.Name}\",\"{student.Email}\",\"{student.Phone}\",{student.Age},\"{student.Location}\",\"{student.LearningStyle}\",\"{student.AcademicGoal}\",\"{student.CareerInterest}\",{student.GPA}");
+                csv.AppendLine($"{student.Name},\"{student.Email}\",\"{student.Phone}\",{student.Age},\"{student.Location}\",\"{student.LearningStyle}\",\"{student.AcademicGoal}\",\"{student.CareerInterest}\",\"{student.PrimaryLanguage}\",\"{student.PersonalityType}\",\"{student.TechnicalSkills}\",\"{student.Extracurriculars}\",\"{student.AccessedResources}\",{student.GPA}");
             }
 
             // Create the file content

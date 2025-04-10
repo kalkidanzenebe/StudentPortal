@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hp\\StudentPortal\\StudentPortal.Web.csproj": {}
+    "C:\\Users\\hp\\Desktop\\SS\\StudentPortal\\StudentPortal.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hp\\StudentPortal\\StudentPortal.Web.csproj": {
+    "C:\\Users\\hp\\Desktop\\SS\\StudentPortal\\StudentPortal.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hp\\StudentPortal\\StudentPortal.Web.csproj",
+        "projectUniqueName": "C:\\Users\\hp\\Desktop\\SS\\StudentPortal\\StudentPortal.Web.csproj",
         "projectName": "StudentPortal.Web",
-        "projectPath": "C:\\Users\\hp\\StudentPortal\\StudentPortal.Web.csproj",
+        "projectPath": "C:\\Users\\hp\\Desktop\\SS\\StudentPortal\\StudentPortal.Web.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hp\\StudentPortal\\obj\\",
+        "outputPath": "C:\\Users\\hp\\Desktop\\SS\\StudentPortal\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,6 +51,12 @@
               "version": "[2.3.1, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.4, )"
             },
